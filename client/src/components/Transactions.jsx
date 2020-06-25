@@ -81,9 +81,6 @@ class Transactions extends React.Component {
   }
 
   handleFormSubmit(event) {
-    console.log("key pressed");
-    console.log(event);
-    console.log(event.which);
     if (event.which == 13) {
       this.addTransaction({
         username: this.props.currentUser,
