@@ -88,12 +88,10 @@ class Budgets extends React.Component {
           {this.props.budgets.map((budget) => (
             <li className="feed-list-item">
               <h2>{budget.name}</h2>
-              <div className="feed-list-item-byline">
-                ${budget.amount} total
-              </div>
               <Transactions
                 currentUser={this.props.currentUser}
                 budget={budget.name}
+                budgetAmount={budget.amount}
               />
               <hr></hr>
               <input

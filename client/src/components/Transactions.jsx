@@ -54,10 +54,13 @@ class Transactions extends React.Component {
         `/transactions?username=${this.props.currentUser}&budget=${this.props.budget}`
       )
       .then(({ data }) => {
-        this.setState({
-          transactions: data,
-        });
+        Promise.resolve(
+          this.setState({
+            transactions: data,
+          })
+        );
       })
+      .then(() => this.setBudgetRemaining())
       .catch((error) => console.log(error));
   }
 
@@ -78,6 +81,17 @@ class Transactions extends React.Component {
         [event.target.name]: event.target.value,
       });
     }
+  }
+
+  setBudgetRemaining() {
+    let transaction,
+      transactionTotal = 0;
+    for (transaction of this.state.transactions) {
+      transactionTotal += transaction.amount;
+    }
+    this.setState({
+      budgetRemaining: this.props.budgetAmount - transactionTotal,
+    });
   }
 
   handleFormSubmit(event) {
@@ -103,10 +117,31 @@ class Transactions extends React.Component {
   render() {
     return (
       <div>
+        <span className="feed-list-item-byline">
+          ${this.props.budgetAmount} total /&nbsp;
+        </span>
+        <span className="feed-list-item-byline">
+          <span className={this.state.budgetRemaining < 0 ? "negative" : ""}>
+            ${this.state.budgetRemaining} remaining
+          </span>
+        </span>
+        <div className="feed-list-item-byline"></div>
+        <div id="progressbar">
+          <div
+            style={{
+              width:
+                ((this.props.budgetAmount - this.state.budgetRemaining) /
+                  this.props.budgetAmount) *
+                  100 +
+                "%",
+            }}
+          ></div>
+        </div>
+        <div className="feed-list-item-byline"></div>
         {this.state.transactions.map((transaction) => (
           <div>
             <p className="transaction-info">
-              {transaction.name}, ${transaction.amount}
+              {transaction.name} &mdash; ${transaction.amount}
             </p>
             <button
               className="delete-button"
