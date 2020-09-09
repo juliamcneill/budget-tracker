@@ -1,14 +1,14 @@
 const express = require("express");
 const db = require("../database");
-
 const bodyParser = require("body-parser");
-
-var router = require("./routes.js");
+const router = require("./routes.js");
 
 const app = express();
+const port = process.env.PORT || 3030;
+
 module.exports.app = app;
 
-app.set("port", 3030);
+app.set("port", port);
 
 app.use(bodyParser.json());
 
