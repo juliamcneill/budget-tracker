@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/budget", { useNewUrlParser: true });
+const connectionString = process.env.ATLAS_DATABASE_URL;
+
+mongoose.connect(connectionString, { useNewUrlParser: true });
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
